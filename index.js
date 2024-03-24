@@ -12,6 +12,13 @@ const port = 8000; // You can change the port number if needed
 const { init, fetchQuery } = require("@airstack/node");
 init("1ab32911bc41b4eef9087e7b8ed71b19d");
 
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*"); // Allow requests from any origin
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -63,7 +70,7 @@ const getUserID = async (fid) => {
           }`; // Replace with GraphQL Query
 
     const { data, error } = await fetchQuery(query);
-    console.log(data.Socials.Social[0].userId, "userId fid");
+    // console.log(data.Socials.Social[0].userId, "userId fid");
     const userFid = data.Socials.Social[0].userId;
     return userFid;
   } catch (error) {
