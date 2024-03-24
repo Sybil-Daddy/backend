@@ -88,9 +88,10 @@ const fetchUserId = async (fid) => {
 app.post("/getanalysis", async (req, res) => {
   try {
     const data = req.body.data.data;
-    let socialKarma = req.body.social.karma
+    let socialKarma = req.body.social.button
+    let aiButton = req.body.ai.button
 
-    console.log(socialKarma, "social karamaa")
+    console.log(aiButton, "ai button")
     
     const list = [0, 1, 2];
     const pinataKey = process.env.PINATA;
@@ -162,7 +163,7 @@ app.post("/getanalysis", async (req, res) => {
 
       //karma api social call here
       let totalkarma = 0;
-      
+
       const karmaSocial = socialKarma;
 
       if (karmaSocial) {
@@ -201,7 +202,18 @@ app.post("/getanalysis", async (req, res) => {
           originalNumber.toString().slice(5)
       );
 
-      aiScore = aiScore + modifiedNumber;
+      if(aiButton && karmaSocial== false){
+        aiScore = aiScore
+      }
+
+      if(karmaSocial && aiButton == false){
+        aiScore = modifiedNumber
+      }
+
+      if(karmaSocial && aiButton){
+          aiScore = aiScore + modifiedNumber;
+      }
+
 
       // Calculate the combined score 
       const combinedScore = calculate_score(
